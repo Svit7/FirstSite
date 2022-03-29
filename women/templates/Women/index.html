@@ -1,0 +1,77 @@
+{% extends 'women/base.html' %}
+{% load static %}
+
+{% block SliderBoard %}
+    <div id="featured_project">
+        <div id="slider">
+            <ul id="sliderContent">
+                <li class="sliderImage">
+                    <a href=""><img src="{% static 'images/slider/1.jpg' %}" alt="1" /></a>
+                    <span class="top"><strong>Hi there</strong></span>
+                </li>
+                <li class="sliderImage">
+                    <a href=""><img src="{% static 'images/slider/2.jpg' %}" alt="2" /></a>
+                    <span class="bottom"><strong>My name Svit, i am a beginner backend developer</strong></span>
+                </li>
+                <li class="sliderImage">
+                    <img src="{% static 'images/slider/3.jpg' %}" alt="3" />
+                    <span class="left"><strong>I have only been studying for 6 months, but I'm not going to stop</strong></span>
+                </li>
+                <li class="sliderImage">
+                    <img src="{% static 'images/slider/4.jpg' %}" alt="4" />
+                    <span class="right"><strong>I don't even know what else to add :)</strong></span>
+                </li>
+                <li class="clear sliderImage"></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+{% for p in posts %}
+	<div class="post_section">
+		<h2><a href="{{ p.get_absolute_url }}">{{p.name}}</a></h2>
+		<div>
+			<p><strong>Data:</strong> {{p.time_update|date:"d-m-Y H:i"}} | <strong>Author:</strong> {{p.author}} | <strong>Category:</strong> {{p.cat}}</p>
+		</div>
+		{% if p.photo %}
+			<p><img class="img-article-left thumb" src="{{p.photo.url}}" alt="image 1"></p>
+		{% endif %}
+
+		{% autoescape on %} <!-- On or off escaping tags -->
+		<p>{{p.content|linebreaks|truncatewords:30}}</p>
+		{% endautoescape %}
+		<div class="clear"></div>
+		<p class="my_continue"><a href="{{ p.get_absolute_url }}">Continue reading...</a></p>
+	</div>
+{% endfor %}
+
+{% if page_obj.has_other_pages %}
+	<nav class="list-pages content-text" >
+		<ul>
+			{% if page_obj.has_previous %}
+				<li class="page-num">
+					<a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+				</li>
+			{% endif %}
+
+			{% for p in paginator.page_range %}
+			{% if page_obj.number == p %}
+				<li class="page-num page-num-selected ">{{ p }}</li>
+			{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+				<li class="page-num">
+					<a href="?page={{ p }}">{{ p }}</a>
+				</li>
+			{% endif %}
+			{% endfor %}
+			{% if page_obj.has_next %}
+				<li class="page-num">
+					<a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+				</li>
+			{% endif %}
+		</ul>
+	</nav>
+{% endif %}
+
+{% endblock %}

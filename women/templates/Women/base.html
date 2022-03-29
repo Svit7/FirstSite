@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+{% load women_tags %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <title>{{title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/main.ico' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/templatemo_style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/s3slider.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles1.css' %}"/>
+    <link href='https://fonts.googleapis.com/css?family=Bebas Neue' rel='stylesheet'>
+</head>
+
+<body>
+    <div id="templatemo_wrapper">
+        {% main_menu %} <!-- end of templatemo_menu -->
+
+        <!-- Sidebar left -->
+        <div id="templatemo_left_column">
+
+            <div id="templatemo_header">
+                <div id="site_title">
+                    <h1><a href="{% url 'home' %}" target="_parent">My <strong>Blog</strong><span>the best</span></a></h1>
+                </div> <!-- end of site_title -->
+            </div> <!-- end of header -->
+
+            <div id="templatemo_sidebar">
+                <div  id="templatemo_rss" class="share">
+                    <a class="share-yt" href="https://www.youtube.com/channel/UClXuYKdnkeKHS2di7G_obIg" target="_blank" rel="nofollow">SUBSCRIBE NOW <br /><span>my youtube</span></a>
+                </div>
+
+                <table class="table-content" border=0 cellpadding="0" cellspacing="0">
+                    <td valign="top">
+                        <ul class="templatemo_list">
+                            {% if cat_selected == 0 %}
+                                <li>Categories</li>
+                            {% else %}
+                                <li><a href="{% url 'home' %}">Categories</a></li>
+                            {% endif %}
+
+                            {% for c in cats %}
+                                {% if c.women__count > 0 %}
+                                    {% if c.pk == cat_selected %}
+                                        <li>{{c.name}}</li>
+                                    {% else %}
+                                        <li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="cleaner_h20"></div>
+                        </ul>
+                    </td>
+                </table>
+            </div>
+        </div> <!-- end Sidebar left -->
+
+        <td valign="top" class="content">
+            <!-- Breadcrumbs -->
+            {% block breadcrumbs %}
+            {% endblock %}
+
+        <!-- Block content -->
+        <div id="templatemo_right_column">
+            {% block SliderBoard %}
+            {% endblock SliderBoard %}
+	        <div id="templatemo_main">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div> <!-- end block content -->
+
+        <!-- Footer -->
+        <div class="cleaner_h20"></div>
+
+  	    <div id="templatemo_footer">
+		    Copyright © 2022 <a href="#">Your Company Name</a> |
+            <a href="https://github.com/Svit7" target="_blank">by Svit</a>
+        </div> <!-- end footer -->
+
+        <div class="cleaner"></div>
+
+    </div> <!-- end of warpper -->
+
+    <!-- JavaScripts-->
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/s3Slider.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#slider').s3Slider({
+                timeOut: 1600
+            });
+        });
+    </script>
+    {% block js %}
+
+    {% endblock js %}
+
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+# User-specific stuff:
+.idea/workspace.xml
+.idea/firstsite.xml
+.idea/codeStyles
+.idea/vcs.xml
+.idea/misc.xml
+.idea/.name
+.idea/inspectionProfiles
+
+.idea/
+
+/.git

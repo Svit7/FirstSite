@@ -1,0 +1,26 @@
+{% extends 'women/base.html' %}
+
+{% block content %}
+
+<div id="templatemo_main">
+	<h1>{{title}}</h1>
+	<p><em>Aliquam pretium porta odio. Fusce quis diam sit amet tortor luctus pellentesque. Donec accumsan urna non elit tristique mattis. Vivamus fermentum orci viverra nisl. In nec magna id ipsum  aliquam dictum.</em></p>
+	<p>Donec euismod enim et risus. Nunc dictum, massa non dignissim commodo, metus quam vehicula lorem, et dignissim enim augue vitae pede. Donec at arcu. Nunc aliquam, dolor vitae sollicitudin lacinia, nibh orci sagittis diam, dignissim sodales dui erat nec eros. <a href="#">Fusce quis enim</a>.</p>
+	<p>Aenean eleifend, neque hendrerit elementum sodales, <a href="#">odio erat sagittis quam</a>, sed tempor orci magna vitae tellus. Proin dui mauris, tempor eget, pulvinar sed, pretium sit amet, dui. Proin vulputate justo et quam. Cras nisl eros, elementum eu, iaculis vitae, viverra ut, ligula. Pellentesque metus. Duis dolor.</p>
+	<div id="contact_form">
+		<h2>Contact with us</h2>
+		<form action="{% url 'contact' %}" id="add_form" method="post">
+			{% csrf_token %}
+			<div class="form-error">{{ form.non_field_errors }}</div>
+			{% for f in form %}
+				<label class="validate-email required form-label" for="{{ f.id_for_label }}">{{f.label}}:</label>{{ f }}
+				<div class="cleaner_h20"></div>
+				<div class="form-error">{{ f.errors }}</div>
+			{% endfor %}
+			<input style="margin-left: 0px;" form="add_form" type="submit" value="Submit" class="submit_btn" />
+			<input type="reset" class="submit_btn" id="reset" value="Reset" />
+		</form>
+	</div>
+</div>
+
+{% endblock %}

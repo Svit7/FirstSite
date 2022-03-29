@@ -1,0 +1,127 @@
+{% extends 'women/base.html' %}
+{% load static %}
+
+{% block content %}
+	<!-- Post section -->
+	<div class="post_section">
+		<h1>{{post.name}}</h1>
+
+		{% if post.photo %}
+			<img class="img-article-left" src="{{post.photo.url}}">
+		{% endif %}
+
+		<span class="my_indent_20">{{post.content|linebreaks}}</span> <!-- end post section -->
+
+		<!-- Comments section -->
+		<div class="comment_tab" id="comment_section">
+			Comments ({{post.comments_post.all.count}})
+		</div>
+		<div class="cleaner_h20"></div>
+
+		<div> <!-- Here was id="comment_section" -->
+			<ol class="comments first_level">
+				{% if messages %}
+				<div>
+					{% for message in messages %}
+						<h4>{{message}}</h4>
+					{% endfor %}
+				</div>
+				{% endif %}
+
+				<li>
+					{% load mptt_tags %}
+					<div class="comment_box commentbox1">
+						{% recursetree post.comments_post.all %}
+						<div class="gravatar"><img src="{% static 'images/avatar.png' %}" alt="author" /></div>
+						<div class="comment_text" id="{{ node.id }}">
+							<div class="comment_author">
+								{{node.author}}
+								<span class="date">{{node.time_create}}</span>
+							</div>
+							{% include 'women/comment_item.html' %}
+							<p>{{node.text}}</p>
+<!--							<p>This parent - {{node.parent}}</p>-->
+							{% if node.level < 3 %}
+							<div class="reply"><a onclick="myFunction({{ node.id }})">Reply</a></div>
+							<div class="cleaner_h30"></div>
+							{% endif %}
+							{% if not node.is_leaf_node %}
+							<div class="children pl-2 pl-md-5">
+							  {{ children }}
+							</div>
+							{% endif %}
+						</div>
+						<div class="cleaner"></div>
+						{% endrecursetree  %}
+					</div>
+				</li>
+
+				<div id="comment_form">
+					<h3>Leave a comment</h3>
+					<form action="" id="myForm" method="post" class="form-input">
+						<div class="form_row">
+							<label><strong>{{form.as_p}}</strong></label>
+						</div>
+						{% csrf_token %}
+						<input type="submit" name="Submit" value="Submit" class="submit_btn" />
+					</form>
+				</div>
+			</ol>
+		</div> <!-- end Comments section -->
+	</div>
+{% endblock %}
+
+{% block js %}
+	<script type="text/javascript">
+	  function formExit() {
+		document.getElementById("newForm").remove();
+	  }
+
+	  function myFunction(id) {
+		if (document.contains(document.getElementById("newForm"))) {
+		  document.getElementById("newForm").remove();
+		}
+
+		var d1 = document.getElementById(id);
+		d1.insertAdjacentHTML('afterend',
+		  '<form action="" id="newForm" method="post" class="form-input"> \
+			<div class="d-flex justify-content-between"><h3>Reply:</h3><div><button \
+			  type="button" class="btn btn-outline-secondary" \
+			  onclick="formExit()"">Close</button></div></div> \
+			<select name="parent" class="d-none" id="id_parentt"> \
+			<option value="' + id + '" selected="' + id + '"></option> \
+			</select> \
+			<label for="id_text"><h4>Comment:</h4></label> \
+			<textarea name="text" class="my_textarea" rows="5" class="form-control" required id="id_text"></textarea> \
+			{% csrf_token %} \
+			<input type="submit" name="Submit" value="Submit" class="btn btn-outline-secondary-my" /> \
+		  </form>');
+
+		//document.querySelector('#id_parentt [value="' + id + '"]').selected = true;
+	  }
+
+	  $('#myForm').trigger("reset");
+	</script>
+
+	<script type="text/javascript">
+		$('body').on('click', '.update_status', function(event){
+        event.preventDefault();
+        if (confirm('Are you sure?')) {
+            var url = $(this).attr('data-url')
+            var tag_li = $(this).parent()
+            console.log(url)
+
+            $.ajax({
+                url:url,
+                type: 'GET',
+                success: function(response) {
+                    tag_li.html(response)
+                    console.log(response)
+                }
+            })
+
+        }
+
+    })
+	</script>
+{% endblock %}

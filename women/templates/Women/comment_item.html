@@ -1,0 +1,15 @@
+    {% if node.post.author == request.user %}
+        <p><span class="update_style">Status: {{node.status}}</span>
+        -
+        <a class="update_status" data-url="{% url 'update_comment_status' node.id 'public' %}" href="#">Publication</a> /
+        <a class="update_status" data-url="{% url 'update_comment_status' node.id 'delete' %}" href="#">Delete</a>
+        </p>
+    {% endif %}
+
+    <div>
+        {% if node.status == True %}
+            <h5>{{status_accept}}</h5>
+        {% elif node.status == False %}
+            <h5>{{status_decline}}</h5>
+        {% endif %}
+    </div>
